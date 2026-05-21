@@ -82,12 +82,12 @@ export default function LoginScreen() {
       />
 
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 56, paddingBottom: 40 }}
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 32, paddingBottom: 20 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         {/* ── Logo ─────────────────────────────────────────── */}
-        <View style={{ alignItems: 'center', marginBottom: 36 }}>
+        <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={{ fontSize: 52, fontWeight: '800', color: colors.primary, letterSpacing: 10 }}>
             KLEOS
           </Text>

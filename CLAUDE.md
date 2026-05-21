@@ -36,14 +36,16 @@ app/                          → rutas Expo Router (solo layouts y screens)
   (auth)/
     _layout.tsx
     register/
-      _layout.tsx             → mantiene estado del stepper
-      index.tsx               → paso 1: rol + datos básicos
+      _layout.tsx             → RegisterFlowProvider (contexto multi-step) + Stack
+      index.tsx               → Role Selection (Coach ✅ | Atleta 🔒 próximamente)
       coach/
+        step1.tsx             → datos básicos (nombre, apellido, fecha, email, password)
         step2.tsx             → perfil profesional
         step3.tsx             → selección de suscripción
         step4.tsx             → crear planes para atletas
         step5.tsx             → código de vinculación
       athlete/
+        step1.tsx             → datos básicos (pendiente)
         step2.tsx             → perfil físico y deportivo
         step3.tsx             → vincular con coach
   (coach)/

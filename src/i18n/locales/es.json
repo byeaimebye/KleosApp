@@ -16,6 +16,44 @@
       "google": "Continuar con Google",
       "no_account": "¿Todavía no tenés cuenta?",
       "register": "Crear cuenta"
+    },
+    "register": {
+      "role_selection": {
+        "title": "¿Cómo vas a usar Kleos?",
+        "subtitle": "Elegí tu rol para personalizar tu experiencia",
+        "coach": "Coach",
+        "coach_desc": "Gestioná atletas, planes y seguimiento",
+        "athlete": "Atleta",
+        "athlete_desc": "Seguí tus entrenamientos y progreso",
+        "coming_soon": "Próximamente",
+        "already_account": "¿Ya tenés cuenta?",
+        "login": "Iniciá sesión"
+      },
+      "step1": {
+        "title": "Datos básicos",
+        "subtitle": "Empecemos con tu información básica",
+        "step_label": "Paso 1 de 5",
+        "first_name": "Nombre",
+        "first_name_placeholder": "Carlos",
+        "last_name": "Apellido",
+        "last_name_placeholder": "García",
+        "birth_date": "Fecha de nacimiento",
+        "birth_date_placeholder": "DD/MM/AAAA",
+        "email": "Email",
+        "email_placeholder": "carlos@coach.com",
+        "password": "Contraseña",
+        "password_placeholder": "Mínimo 6 caracteres",
+        "confirm_password": "Confirmar contraseña",
+        "confirm_password_placeholder": "Repetí tu contraseña",
+        "password_mismatch": "Las contraseñas no coinciden",
+        "next": "Siguiente",
+        "already_account": "¿Ya tenés cuenta?",
+        "login": "Iniciá sesión"
+      },
+      "step2_placeholder": {
+        "title": "Próximamente",
+        "subtitle": "Acá va a ir el perfil profesional"
+      }
     }
   }
 }
