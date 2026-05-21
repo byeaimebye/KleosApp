@@ -5,6 +5,34 @@
 
 ---
 
+## Dependencias explícitas requeridas (Expo SDK 54)
+
+Estas dependencias son transitivas de `expo-router` pero deben estar declaradas **explícitamente** en `package.json`. Si no están, `npm install` de otras packages las puede eliminar y el bundler falla con `Unable to resolve`.
+
+```json
+"dependencies": {
+  "expo-router": "^6",
+  "react-native-safe-area-context": "...",
+  "react-native-screens": "...",
+  "react-native-reanimated": "...",
+  "expo-linking": "...",
+  "expo-constants": "...",
+  "expo-status-bar": "...",
+  "zustand": "...",
+  "react-hook-form": "...",
+  "zod": "...",
+  "i18next": "...",
+  "react-i18next": "...",
+  "expo-localization": "...",
+  "@hookform/resolvers": "...",
+  "expo-linear-gradient": "..."
+}
+```
+
+**Regla**: Toda dependencia importada en código de producción va en `dependencies`, no solo en `devDependencies`.
+
+---
+
 ## Expo Router v6
 
 ### Ambigüedad de rutas con grupos
