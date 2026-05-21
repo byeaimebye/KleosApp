@@ -10,7 +10,7 @@ interface InputProps {
   secureTextEntry?: boolean;
   error?: string;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+  keyboardType?: 'default' | 'email-address' | 'numeric' | 'number-pad' | 'phone-pad';
   leftElement?: React.ReactNode;
   rightElement?: React.ReactNode;
 }

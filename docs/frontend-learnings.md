@@ -155,12 +155,18 @@ z.string().min(1, 'Email requerido').refine(
 ## Arquitectura de estilos
 
 ### Separación de responsabilidades
-| Archivo | Responsabilidad |
-|---|---|
-| `constants/colors.ts` | Tokens de color — fuente única |
-| `constants/theme.ts` | Tipografía, radios, sombras compartidos |
-| `components/ui/*.tsx` | Cada componente tiene su propio `StyleSheet` |
-| Screens | CERO `StyleSheet.create`. Solo composición + `style` con tokens |
+
+Patrón estándar de la comunidad React Native (React Navigation, Expo, todas las librerías principales):
+
+| Archivo | StyleSheet | Responsabilidad |
+|---|---|---|
+| `constants/colors.ts` | ❌ | Solo tokens de color |
+| `constants/theme.ts` | ❌ | Solo tokens de tipografía, radios, sombras |
+| `components/ui/*.tsx` | ✅ | StyleSheet co-located al final del archivo |
+| `components/auth/*.tsx` | ✅ | StyleSheet co-located al final del archivo |
+| Screens (`app/**`) | ❌ | Solo composición de componentes |
+
+**Por qué StyleSheet en componentes**: co-location — estilos y lógica del componente viven juntos, fácil de encontrar y modificar. Los tokens (`colors`, `theme`) se importan dentro de cada StyleSheet.
 
 ### Componentes UI creados
 - `Card.tsx` — contenedor frosted glass `rgba(15,23,42,0.6)`
