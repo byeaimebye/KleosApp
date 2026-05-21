@@ -31,6 +31,22 @@ Estas dependencias son transitivas de `expo-router` pero deben estar declaradas 
 
 **Regla**: Toda dependencia importada en código de producción va en `dependencies`, no solo en `devDependencies`.
 
+### Versiones exactas requeridas para SDK 54 (New Architecture)
+
+Siempre usar `npx expo install <package>` o verificar `node_modules/expo/bundledNativeModules.json` antes de instalar un package nativo manualmente. Las versiones incorrectas con `newArchEnabled: true` causan crashes de tipo en el bridge Java/Kotlin (`java.lang.String cannot be cast to java.lang.Boolean`).
+
+```bash
+# Verificar versión compatible antes de instalar
+node -e "console.log(require('./node_modules/expo/bundledNativeModules.json')['<package-name>'])"
+```
+
+| Package | Versión SDK 54 |
+|---|---|
+| `react-native-reanimated` | `~4.1.1` |
+| `react-native-screens` | `~4.16.0` |
+| `react-native-safe-area-context` | `~5.6.0` |
+| `react-native-worklets` | `0.5.1` |
+
 ---
 
 ## Expo Router v6
