@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "login": {
+      "title": "Bienvenido/a",
+      "subtitle": "¿Estás listo para seguir con tu propósito?",
+      "email": "Email",
+      "email_placeholder": "carlos@coach.com",
+      "password": "Contraseña",
+      "password_placeholder": "password123",
+      "remember_me": "Recordarme",
+      "forgot_password": "Olvidé mi contraseña?",
+      "submit": "Iniciar sesión",
+      "error": "Email o contraseña incorrectos",
+      "divider": "o continuar con",
+      "apple": "Continuar con Apple",
+      "google": "Continuar con Google",
+      "no_account": "¿Todavía no tenés cuenta?",
+      "register": "Crear cuenta"
+    }
+  }
+}
