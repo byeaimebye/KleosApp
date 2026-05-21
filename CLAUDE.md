@@ -263,3 +263,108 @@ Planes de suscripción Kleos → Coach:
 | Enterprise | 100+ | Negociado |
 
 El coach también crea sus propios planes para sus atletas (nombre, precio, frecuencia, sesiones, deporte).
+
+---
+
+## Workflow de Desarrollo — OBLIGATORIO
+
+Antes de desarrollar o modificar CUALQUIER cosa, seguir este orden estrictamente.
+
+### Fases requeridas
+
+#### 1. Proposal
+Analizar el pedido y presentar:
+- Objetivo de la tarea
+- Scope de trabajo
+- Archivos potencialmente impactados
+- Riesgos o concerns arquitectónicos
+- Dependencias
+- Oportunidades de reutilización
+- Si la tarea excede el scope original
+- Preguntas o blockers
+
+**No escribir código. No crear archivos. No implementar.**
+
+#### 2. Design
+Presentar:
+- Enfoque técnico
+- Impacto en navegación
+- Estructura de componentes
+- Enfoque de state management
+- Componentes reutilizables a aprovechar
+- Cambios arquitectónicos mínimos necesarios
+- Estrategia de carpetas/archivos
+- Estrategia de API/mock si aplica
+- Separación de responsabilidades
+
+**Mantener la solución mínima. No overengineering. No implementar.**
+
+#### 3. Tasks
+Breakdown detallado de tareas:
+- Incrementales y bien scopeadas
+- Con archivos impactados
+- Separando responsabilidades frontend/backend
+- Identificando lógica reutilizable/compartida
+
+**Todavía no implementar.**
+
+#### 4. STOP → Pedir aprobación
+Después de Proposal + Design + Tasks, **detenerse y pedir aprobación** antes de:
+- generar código
+- crear archivos
+- refactorizar
+- migrar arquitectura
+- modificar implementaciones existentes
+
+---
+
+### Reglas de seguridad arquitectónica
+
+NO hacer sin aprobación explícita:
+- Refactorizar arquitectura no relacionada con la tarea
+- Migrar routing/navegación automáticamente
+- Introducir nuevos patrones
+- Reestructurar carpetas innecesariamente
+- Reemplazar librerías automáticamente
+- Expandir el scope original silenciosamente
+
+Si la implementación requiere migración de router, auth, providers, state management o arquitectura → **STOP y pedir aprobación primero**.
+
+---
+
+### Control de scope
+
+Si la tarea crece más de lo scopeado originalmente:
+- STOP
+- Explicar por qué
+- Proponer dividir en stories/tasks adicionales
+
+No continuar expandiendo la implementación automáticamente.
+
+---
+
+### Knowledge base
+
+Mantener `/docs/frontend-learnings.md` actualizado con cada descubrimiento técnico:
+- Comportamientos de Expo Router
+- Limitaciones de NativeWind
+- Decisiones de navegación
+- Anti-patrones encontrados
+- Soluciones a bugs recurrentes
+- Convenciones del proyecto
+
+---
+
+### Gestión de stories
+
+Por cada feature/story crear:
+- Story frontend en `/docs/stories/`
+- Story backend (pendiente) en `/docs/stories/`
+
+### Git workflow
+
+Por cada tarea:
+1. Crear rama nueva
+2. Implementar
+3. Antes del commit: pasos de testing manual
+4. Solo después de validación: commit + push

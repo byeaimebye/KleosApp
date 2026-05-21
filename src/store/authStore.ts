@@ -13,7 +13,7 @@ interface AuthStore {
   user: User | null;
   role: UserRole | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<UserRole>;
   logout: () => void;
 }
 
@@ -39,6 +39,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
       role: testUser.role,
       isAuthenticated: true,
     });
+
+    return testUser.role;
   },
 
   logout: () => {
