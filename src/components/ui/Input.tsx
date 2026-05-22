@@ -9,6 +9,7 @@ interface InputProps {
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
   error?: string;
+  required?: boolean;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'number-pad' | 'phone-pad';
   leftElement?: React.ReactNode;
@@ -22,6 +23,7 @@ export default function Input({
   onChangeText,
   secureTextEntry = false,
   error,
+  required = false,
   autoCapitalize = 'sentences',
   keyboardType = 'default',
   leftElement,
@@ -29,7 +31,12 @@ export default function Input({
 }: InputProps) {
   return (
     <View style={s.wrapper}>
-      {label && <Text style={typography.label}>{label}</Text>}
+      {label && (
+        <View style={s.labelRow}>
+          <Text style={typography.label}>{label}</Text>
+          {required && <Text style={s.asterisk}> *</Text>}
+        </View>
+      )}
       <View style={[s.row, error ? s.rowError : s.rowDefault]}>
         {leftElement}
         <TextInput
@@ -53,6 +60,15 @@ export default function Input({
 const s = StyleSheet.create({
   wrapper: {
     gap: 8,
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  asterisk: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.danger,
   },
   row: {
     flexDirection: 'row',
