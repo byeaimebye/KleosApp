@@ -36,3 +36,23 @@ export const registerStep1Schema = z
   });
 
 export type RegisterStep1Input = z.infer<typeof registerStep1Schema>;
+
+// ─── Register Step 2 ─────────────────────────────────────────────────────────
+
+export const registerStep2Schema = z.object({
+  avatarUri: z.string().optional(),
+  logoUri: z.string().optional(),
+  businessName: z.string().min(1, 'Nombre o marca requerido'),
+  phrase: z.string().optional(),
+  yearsOfExperience: z.string().optional(),
+  city: z.string().min(1, 'Ciudad requerida'),
+  sports: z.array(z.string()).min(1, 'Seleccioná al menos un deporte'),
+  socialLinks: z
+    .object({
+      instagram: z.string().optional(),
+      strava: z.string().optional(),
+    })
+    .optional(),
+});
+
+export type RegisterStep2Input = z.infer<typeof registerStep2Schema>;

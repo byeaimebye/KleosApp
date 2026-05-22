@@ -50,9 +50,32 @@
         "already_account": "¿Ya tenés cuenta?",
         "login": "Iniciá sesión"
       },
-      "step2_placeholder": {
+      "step2": {
+        "title": "Tu perfil profesional",
+        "subtitle": "Contanos sobre vos y tu negocio",
+        "step_label": "Paso 2 de 5",
+        "avatar_label": "Foto de perfil",
+        "logo_label": "Logo del negocio",
+        "business_name": "Nombre o marca",
+        "business_name_placeholder": "Carlos Mendoza Coaching",
+        "phrase": "Frase o subtítulo",
+        "phrase_placeholder": "Transformá tu vida con el deporte",
+        "years_exp": "Años de experiencia",
+        "years_exp_placeholder": "5",
+        "city": "Ciudad / Ubicación",
+        "city_placeholder": "Buenos Aires",
+        "sports_label": "Deportes que entrenás",
+        "sports_error": "Seleccioná al menos un deporte",
+        "social_label": "Redes sociales",
+        "instagram_placeholder": "@tu_usuario",
+        "strava_placeholder": "tu perfil de Strava",
+        "next": "Siguiente",
+        "already_account": "¿Ya tenés cuenta?",
+        "login": "Iniciá sesión"
+      },
+      "step3_placeholder": {
         "title": "Próximamente",
-        "subtitle": "Acá va a ir el perfil profesional"
+        "subtitle": "Acá va a ir la suscripción"
       }
     }
   }

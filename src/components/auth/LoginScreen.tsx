@@ -3,6 +3,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -14,24 +15,22 @@ import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/store/authStore';
 import { loginSchema, type LoginInput } from '@/schemas/authSchemas';
 import { colors } from '@/constants/colors';
-import { typography } from '@/constants/theme';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import { radius, typography } from '@/constants/theme';
+import AuthCTA from '@/components/auth/AuthCTA';
 import Divider from '@/components/ui/Divider';
 import Input from '@/components/ui/Input';
 import SocialButton from '@/components/ui/SocialButton';
 
-// Íconos inline — sin dependencia externa
-const MailIcon = () => <Text style={{ fontSize: 16, opacity: 0.55, color: colors.foreground }}>✉</Text>;
-const LockIcon = () => <Text style={{ fontSize: 16, opacity: 0.55, color: colors.foreground }}>🔒</Text>;
+const MailIcon = () => <Text style={s.icon}>✉</Text>;
+const LockIcon = () => <Text style={s.icon}>🔒</Text>;
 const EyeIcon = ({ visible }: { visible: boolean }) => (
-  <Text style={{ fontSize: 16, opacity: 0.55, color: colors.foreground }}>
-    {visible ? '🙈' : '👁'}
-  </Text>
+  <Text style={s.icon}>{visible ? '🙈' : '👁'}</Text>
 );
-const ArrowIcon = () => <Text style={{ fontSize: 17, fontWeight: '700', color: '#000' }}>→</Text>;
-const AppleIcon = () => <Text style={{ fontSize: 18, color: colors.foreground }}>⌘</Text>;
-const GoogleIcon = () => <Text style={{ fontSize: 18, fontWeight: '800', color: '#4285F4' }}>G</Text>;
+const ArrowIcon = () => <Text style={s.arrowIcon}>→</Text>;
+const AppleIcon = () => <Text style={s.socialIcon}>⌘</Text>;
+const GoogleIcon = () => (
+  <Text style={[s.socialIcon, { color: '#4285F4', fontWeight: '800' }]}>G</Text>
+);
 
 export default function LoginScreen() {
   const { t } = useTranslation();
@@ -52,61 +51,44 @@ export default function LoginScreen() {
 
   const onSubmit = async (data: LoginInput) => {
     try {
-      const { role } = await login(data.email, data.password);
-      if (role === 'coach') {
-        router.replace('/(coach)');
-      } else {
-        router.replace('/(athlete)');
-      }
+      const role = await login(data.email, data.password);
+      router.replace(role === 'coach' ? '/(coach)' : '/(athlete)');
     } catch {
       setError('root', { message: t('auth.login.error') });
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: colors.background }}
-    >
+    <View style={s.root}>
       {/* Glow de fondo */}
-      <View
-        style={{
-          position: 'absolute',
-          bottom: -60,
-          left: -60,
-          right: -60,
-          height: 340,
-          borderRadius: 340,
-          backgroundColor: 'rgba(52,211,153,0.12)',
-        }}
-      />
+      <View style={s.glow} />
 
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 32, paddingBottom: 20 }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+      {/* ScrollView ajusta con el teclado — AuthCTA queda fuera y no sube */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={s.flex}
       >
-        {/* ── Logo ─────────────────────────────────────────── */}
-        <View style={{ alignItems: 'center', marginBottom: 20 }}>
-          <Text style={{ fontSize: 52, fontWeight: '800', color: colors.primary, letterSpacing: 10 }}>
-            KLEOS
-          </Text>
-          <Text style={{ fontSize: 12, color: colors.muted, letterSpacing: 2, marginTop: 4, textTransform: 'uppercase' }}>
-            Tu plataforma de entrenamiento
-          </Text>
-        </View>
+        <ScrollView
+          contentContainerStyle={s.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Logo */}
+          <View style={s.logoSection}>
+            <Text style={s.logoText}>KLEOS</Text>
+            <Text style={s.logoSub}>Tu plataforma de entrenamiento</Text>
+          </View>
 
-        {/* ── Card ─────────────────────────────────────────── */}
-        <Card>
-          <Text style={[typography.heading, { marginBottom: 4 }]}>
+          {/* Títulos */}
+          <Text style={[typography.heading, s.heading]}>
             {t('auth.login.title')}
           </Text>
-          <Text style={[typography.subheading, { marginBottom: 24 }]}>
+          <Text style={[typography.subheading, s.subheading]}>
             {t('auth.login.subtitle')}
           </Text>
 
           {/* Email */}
-          <View style={{ marginBottom: 16 }}>
+          <View style={s.field}>
             <Controller
               control={control}
               name="email"
@@ -126,7 +108,7 @@ export default function LoginScreen() {
           </View>
 
           {/* Password */}
-          <View style={{ marginBottom: 16 }}>
+          <View style={s.field}>
             <Controller
               control={control}
               name="password"
@@ -153,33 +135,17 @@ export default function LoginScreen() {
           </View>
 
           {/* Remember me + Forgot */}
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <View style={s.rememberRow}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+              style={s.rememberLeft}
               onPress={() => setRememberMe((v) => !v)}
               activeOpacity={0.7}
             >
-              <View
-                style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: 4,
-                  borderWidth: 1,
-                  borderColor: rememberMe ? colors.success : colors.border,
-                  backgroundColor: rememberMe ? colors.success : colors.inputBg,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {rememberMe && (
-                  <Text style={{ color: colors.foreground, fontSize: 10, fontWeight: '700', lineHeight: 12 }}>
-                    ✓
-                  </Text>
-                )}
+              <View style={[s.checkbox, rememberMe && s.checkboxOn]}>
+                {rememberMe && <Text style={s.checkmark}>✓</Text>}
               </View>
               <Text style={typography.caption}>{t('auth.login.remember_me')}</Text>
             </TouchableOpacity>
-
             <TouchableOpacity activeOpacity={0.7}>
               <Text style={typography.link}>{t('auth.login.forgot_password')}</Text>
             </TouchableOpacity>
@@ -187,58 +153,149 @@ export default function LoginScreen() {
 
           {/* Error global */}
           {errors.root && (
-            <View
-              style={{
-                backgroundColor: 'rgba(127,29,29,0.4)',
-                borderWidth: 1,
-                borderColor: 'rgba(239,68,68,0.4)',
-                borderRadius: 12,
-                paddingHorizontal: 16,
-                paddingVertical: 12,
-                marginBottom: 16,
-              }}
-            >
-              <Text style={{ fontSize: 12, color: '#fca5a5', textAlign: 'center' }}>
-                {errors.root.message}
-              </Text>
+            <View style={s.errorBox}>
+              <Text style={s.errorText}>{errors.root.message}</Text>
             </View>
           )}
 
-          {/* Botón principal */}
-          <View style={{ marginBottom: 24 }}>
-            <Button
-              variant="gradient"
-              size="lg"
-              onPress={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-              rightIcon={<ArrowIcon />}
-            >
-              {t('auth.login.submit')}
-            </Button>
-          </View>
-
-          {/* Divider */}
-          <View style={{ marginBottom: 20 }}>
+          {/* Divider + Social */}
+          <View style={s.dividerWrap}>
             <Divider label={t('auth.login.divider')} />
           </View>
 
-          {/* Social buttons */}
-          <View style={{ gap: 10, marginBottom: 24 }}>
+          <View style={s.socialGroup}>
             <SocialButton label={t('auth.login.apple')} icon={<AppleIcon />} />
             <SocialButton label={t('auth.login.google')} icon={<GoogleIcon />} />
           </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
-          {/* Footer */}
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={typography.caption}>{t('auth.login.no_account')} </Text>
-            <TouchableOpacity onPress={() => router.push('/(auth)/register')} activeOpacity={0.75}>
-              <Text style={{ fontSize: 13, fontWeight: '700', color: colors.gradientTo, borderBottomWidth: 1, borderBottomColor: colors.gradientTo }}>
-                {t('auth.login.register')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      {/* CTA fuera del KeyboardAvoidingView — no sube con el teclado */}
+      <AuthCTA
+        buttonLabel={t('auth.login.submit')}
+        onButtonPress={handleSubmit(onSubmit)}
+        buttonDisabled={isSubmitting}
+        buttonRightIcon={<ArrowIcon />}
+        footerText={t('auth.login.no_account')}
+        footerLinkText={t('auth.login.register')}
+        onFooterLinkPress={() => router.push('/(auth)/register')}
+      />
+    </View>
   );
 }
+
+const s = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  flex: {
+    flex: 1,
+  },
+  glow: {
+    position: 'absolute',
+    bottom: -60,
+    left: -60,
+    right: -60,
+    height: 340,
+    borderRadius: 340,
+    backgroundColor: 'rgba(52,211,153,0.12)',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 16,
+  },
+  logoSection: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  logoText: {
+    fontSize: 52,
+    fontWeight: '800',
+    color: colors.primary,
+    letterSpacing: 10,
+  },
+  logoSub: {
+    fontSize: 12,
+    color: colors.muted,
+    letterSpacing: 2,
+    marginTop: 4,
+    textTransform: 'uppercase',
+  },
+  heading: {
+    marginBottom: 4,
+  },
+  subheading: {
+    marginBottom: 24,
+  },
+  field: {
+    marginBottom: 16,
+  },
+  rememberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  rememberLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  checkbox: {
+    width: 16,
+    height: 16,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.inputBg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxOn: {
+    backgroundColor: colors.success,
+    borderColor: colors.success,
+  },
+  checkmark: {
+    color: colors.foreground,
+    fontSize: 10,
+    fontWeight: '700',
+    lineHeight: 12,
+  },
+  errorBox: {
+    backgroundColor: 'rgba(127,29,29,0.4)',
+    borderWidth: 1,
+    borderColor: 'rgba(239,68,68,0.4)',
+    borderRadius: radius.md,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 16,
+  },
+  errorText: {
+    fontSize: 12,
+    color: '#fca5a5',
+    textAlign: 'center',
+  },
+  dividerWrap: {
+    marginBottom: 16,
+  },
+  socialGroup: {
+    gap: 10,
+  },
+  icon: {
+    fontSize: 16,
+    opacity: 0.55,
+    color: colors.foreground,
+  },
+  arrowIcon: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#000',
+  },
+  socialIcon: {
+    fontSize: 18,
+    color: colors.foreground,
+  },
+});

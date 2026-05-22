@@ -15,14 +15,11 @@ import { useRouter } from 'expo-router';
 import { useRegisterFlow } from '@/context/RegisterFlowContext';
 import { registerStep1Schema, type RegisterStep1Input } from '@/schemas/authSchemas';
 import { colors } from '@/constants/colors';
-import { radius, shadows, typography } from '@/constants/theme';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import { radius, typography } from '@/constants/theme';
+import AuthCTA from '@/components/auth/AuthCTA';
 import Input from '@/components/ui/Input';
 
 const TOTAL_COACH_STEPS = 5;
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function formatBirthDate(text: string): string {
   const digits = text.replace(/\D/g, '').slice(0, 8);
@@ -30,8 +27,6 @@ function formatBirthDate(text: string): string {
   if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
   return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
 }
-
-// ─── Icons ────────────────────────────────────────────────────────────────────
 
 const LockIcon = () => (
   <Text style={{ fontSize: 15, opacity: 0.5, color: colors.foreground }}>🔒</Text>
@@ -71,57 +66,56 @@ export default function RegisterStep1Screen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={s.root}
-    >
-      {/* Header */}
-      <View style={s.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={s.backButton}
-          activeOpacity={0.7}
-        >
-          <Text style={s.backIcon}>←</Text>
-        </TouchableOpacity>
-
-        {/* Progress bar */}
-        <View style={s.progressContainer}>
-          <View style={s.progressTrack}>
-            {Array.from({ length: TOTAL_COACH_STEPS }).map((_, i) => (
-              <View
-                key={i}
-                style={[
-                  s.progressSegment,
-                  i === 0 ? s.progressSegmentActive : s.progressSegmentInactive,
-                  i === 0 && s.progressSegmentCurrent,
-                ]}
-              />
-            ))}
-          </View>
-          <Text style={s.stepLabel}>{t('auth.register.step1.step_label')}</Text>
-        </View>
-      </View>
-
-      {/* Title */}
-      <View style={s.titleSection}>
-        <Text style={[typography.heading, s.title]}>
-          {t('auth.register.step1.title')}
-        </Text>
-        <Text style={[typography.subheading]}>
-          {t('auth.register.step1.subtitle')}
-        </Text>
-      </View>
-
-      {/* Scrollable form */}
-      <ScrollView
-        style={s.scrollView}
-        contentContainerStyle={s.scrollContent}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+    <View style={s.root}>
+      {/* KeyboardAvoidingView solo envuelve el contenido scrolleable */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={s.flex}
       >
-        <Card>
-          {/* Nombre + Apellido en fila */}
+        {/* Header */}
+        <View style={s.header}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={s.backButton}
+            activeOpacity={0.7}
+          >
+            <Text style={s.backIcon}>←</Text>
+          </TouchableOpacity>
+
+          <View style={s.progressContainer}>
+            <View style={s.progressTrack}>
+              {Array.from({ length: TOTAL_COACH_STEPS }).map((_, i) => (
+                <View
+                  key={i}
+                  style={[
+                    s.progressSegment,
+                    i === 0 ? s.progressActive : s.progressPending,
+                    i === 0 && s.progressCurrent,
+                  ]}
+                />
+              ))}
+            </View>
+            <Text style={s.stepLabel}>{t('auth.register.step1.step_label')}</Text>
+          </View>
+        </View>
+
+        {/* Title */}
+        <View style={s.titleSection}>
+          <Text style={[typography.heading, s.title]}>
+            {t('auth.register.step1.title')}
+          </Text>
+          <Text style={typography.subheading}>
+            {t('auth.register.step1.subtitle')}
+          </Text>
+        </View>
+
+        <ScrollView
+          style={s.scrollView}
+          contentContainerStyle={s.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Nombre + Apellido */}
           <View style={s.row}>
             <View style={s.halfField}>
               <Controller
@@ -133,6 +127,7 @@ export default function RegisterStep1Screen() {
                     placeholder={t('auth.register.step1.first_name_placeholder')}
                     value={value}
                     onChangeText={onChange}
+                    required
                     error={errors.firstName?.message}
                   />
                 )}
@@ -148,6 +143,7 @@ export default function RegisterStep1Screen() {
                     placeholder={t('auth.register.step1.last_name_placeholder')}
                     value={value}
                     onChangeText={onChange}
+                    required
                     error={errors.lastName?.message}
                   />
                 )}
@@ -167,6 +163,7 @@ export default function RegisterStep1Screen() {
                   value={value}
                   onChangeText={(text) => onChange(formatBirthDate(text))}
                   keyboardType="number-pad"
+                  required
                   error={errors.birthDate?.message}
                 />
               )}
@@ -186,6 +183,7 @@ export default function RegisterStep1Screen() {
                   onChangeText={onChange}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  required
                   error={errors.email?.message}
                 />
               )}
@@ -204,6 +202,7 @@ export default function RegisterStep1Screen() {
                   value={value}
                   onChangeText={onChange}
                   secureTextEntry={!showPassword}
+                  required
                   error={errors.password?.message}
                   leftElement={<LockIcon />}
                   rightElement={
@@ -231,6 +230,7 @@ export default function RegisterStep1Screen() {
                   value={value}
                   onChangeText={onChange}
                   secureTextEntry={!showConfirm}
+                  required
                   error={errors.confirmPassword?.message}
                   leftElement={<LockIcon />}
                   rightElement={
@@ -245,33 +245,19 @@ export default function RegisterStep1Screen() {
               )}
             />
           </View>
-        </Card>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
-      {/* CTA fijo */}
-      <View style={s.cta}>
-        <Button
-          variant="gradient"
-          size="lg"
-          onPress={handleSubmit(onSubmit)}
-          rightIcon={<Text style={s.arrowIcon}>→</Text>}
-        >
-          {t('auth.register.step1.next')}
-        </Button>
-
-        <View style={s.footer}>
-          <Text style={typography.caption}>
-            {t('auth.register.step1.already_account')}{' '}
-          </Text>
-          <TouchableOpacity
-            onPress={() => router.replace('/(auth)')}
-            activeOpacity={0.7}
-          >
-            <Text style={s.loginLink}>{t('auth.register.step1.login')}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
+      {/* CTA fuera del KeyboardAvoidingView — no sube con el teclado */}
+      <AuthCTA
+        buttonLabel={t('auth.register.step1.next')}
+        onButtonPress={handleSubmit(onSubmit)}
+        buttonRightIcon={<Text style={s.arrowIcon}>→</Text>}
+        footerText={t('auth.register.step1.already_account')}
+        footerLinkText={t('auth.register.step1.login')}
+        onFooterLinkPress={() => router.replace('/(auth)')}
+      />
+    </View>
   );
 }
 
@@ -280,6 +266,9 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingTop: 56,
+  },
+  flex: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -315,13 +304,13 @@ const s = StyleSheet.create({
     height: 4,
     borderRadius: 2,
   },
-  progressSegmentActive: {
+  progressActive: {
     backgroundColor: colors.primary,
   },
-  progressSegmentCurrent: {
+  progressCurrent: {
     flex: 2,
   },
-  progressSegmentInactive: {
+  progressPending: {
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
   stepLabel: {
@@ -331,7 +320,7 @@ const s = StyleSheet.create({
   },
   titleSection: {
     paddingHorizontal: 24,
-    marginBottom: 16,
+    marginBottom: 20,
     gap: 4,
   },
   title: {
@@ -355,29 +344,9 @@ const s = StyleSheet.create({
   field: {
     marginBottom: 16,
   },
-  cta: {
-    paddingHorizontal: 24,
-    paddingBottom: 36,
-    paddingTop: 12,
-    gap: 16,
-    ...shadows.card,
-    backgroundColor: colors.background,
-  },
   arrowIcon: {
     fontSize: 17,
     fontWeight: '700',
     color: '#000',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loginLink: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: colors.gradientTo,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gradientTo,
   },
 });
